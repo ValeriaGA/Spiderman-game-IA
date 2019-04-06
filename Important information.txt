@@ -1,0 +1,35 @@
+Voiced recognition using unity
+A good one-> https://www.youtube.com/watch?v=29vyEOgsW8s
+https://www.youtube.com/watch?v=7NrovM-pA3Q
+
+
+Otaku city https://assetstore.unity.com/packages/3d/environments/urban/japanese-otaku-city-20359
+Create a city: https://www.youtube.com/watch?v=xkuniXI3SEE
+Bee example: https://github.com/LightBuzz/Speech-Recognition-Unity
+
+Voice recognition library: https://docs.unity3d.com/ScriptReference/Windows.Speech.KeywordRecognizer.html
+Import textures: https://docs.unity3d.com/Manual/ImportingTextures.html
+3D Spiderman: https://www.cgtrader.com/free-3d-models/character/other/spiderman-scene 
+
+Lista de tareas:
+
+Vale:
+-Dibujar la ciudad
+-Mover objeto(spiderman) por reconocimiento de voz
+
+Josue:
+-Dibujar ruta mas corta(mini mapa)
+
+Oscar:
+-Recepcion de parametros por reconocimiento de voz
+-Marcar punto inicial y final
+
+Philip:
+-Calcular el camino mas corto A* 
+-Calcular con diagonales
+
+Luis pa
+-Buscar obstaculos, spiderman y a mary jane 
+
+
+Proxima reunion: viernes 15 en el almuerzo
