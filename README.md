@@ -1,2 +1,2 @@
 # Spiderman-game-IA
-Spiderman-game 
+An spiderman game using voiced recognition and A* for the IA course

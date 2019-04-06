@@ -8,6 +8,7 @@ namespace IA_Proyecto_1
     public class buildCity : MonoBehaviour
     {
         public GameObject[] buildings;
+        public GameObject[] people;
         private Grid map;
         private int buildingFootprint = 3;
 		private System.Boolean diagonal = false;
@@ -23,7 +24,7 @@ namespace IA_Proyecto_1
                 for (int w = 0; w < map.width; w++)
                 {
                     //int result = (int)(Mathf.PerlinNoise(w / 10.0f + seed, h / 10.0f + seed) * 10);
-                    Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint);
+                    Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint); 
                     int n = Random.Range(0, buildings.Length);
                     Instantiate(buildings[n], pos, Quaternion.identity);
                     if (n == 5)
@@ -43,6 +44,12 @@ namespace IA_Proyecto_1
             {
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
+
+            Vector3 posWoman = new Vector3(goal.X * buildingFootprint, 5, goal.Y * buildingFootprint);
+            Instantiate(people[0], posWoman, Quaternion.identity);
+            Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
+            Instantiate(people[1],posSpiderman , Quaternion.identity);
+
 
             AStar astar = new AStar(map, origin, goal, diagonal);
             if (astar.cameFrom.ContainsKey(goal))
