@@ -28,12 +28,7 @@ ModelImporter:
     4300002: 3
     4300004: 2
     4300006: 1
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Mat
-    second: {fileID: 2100000, guid: 2a2d576301b475a4682f928dc1441d02, type: 2}
+  externalObjects: {}
   materials:
     importMaterials: 1
     materialName: 0
