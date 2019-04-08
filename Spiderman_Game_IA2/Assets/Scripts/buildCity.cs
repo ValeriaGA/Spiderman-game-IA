@@ -45,7 +45,6 @@ namespace IA_Proyecto_1
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
 
-            Vector3 posWoman = new Vector3(goal.X * buildingFootprint, 5, goal.Y * buildingFootprint);
             Vector3 posWoman = new Vector3(goal.X * buildingFootprint, 6, goal.Y * buildingFootprint);
             Instantiate(people[0], posWoman, Quaternion.identity);
 
