@@ -175,7 +175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 198410575}
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 28, y: 12, z: 0}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -234,6 +234,14 @@ MonoBehaviour:
   people:
   - {fileID: 6280403967976710283, guid: d742866e54a18364f8b6b41be0c8ac92, type: 3}
   - {fileID: 2606312287274995509, guid: 31a399946efcbb34b9fb2c9da726efb9, type: 3}
+  - {fileID: 141268, guid: b3d3a7ba5f4d42943920370ae1696723, type: 3}
+  - {fileID: 147108, guid: 3d01ef65dd7df27469c08a5faaf917bd, type: 3}
+  - {fileID: 151704, guid: 43cefcf568e58d84d802bbb3c6a74777, type: 3}
+  - {fileID: 189348, guid: d597a8fa6b192c545bbae896e4d42a21, type: 3}
+  - {fileID: 117616, guid: b2fcb4869e568194ebff11fc13530282, type: 3}
+  - {fileID: 3534732689706627967, guid: 22b0f6b8fb1a9a441a409534f02b263d, type: 3}
+  mapWidth: 20
+  mapHeight: 20
 --- !u!1 &1209200350
 GameObject:
   m_ObjectHideFlags: 0
