@@ -46,7 +46,9 @@ namespace IA_Proyecto_1
             }
 
             Vector3 posWoman = new Vector3(goal.X * buildingFootprint, 5, goal.Y * buildingFootprint);
+            Vector3 posWoman = new Vector3(goal.X * buildingFootprint, 6, goal.Y * buildingFootprint);
             Instantiate(people[0], posWoman, Quaternion.identity);
+
             Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
             Instantiate(people[1],posSpiderman , Quaternion.identity);
 
