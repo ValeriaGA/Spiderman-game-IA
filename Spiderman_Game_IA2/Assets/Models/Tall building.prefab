@@ -89,8 +89,9 @@ GameObject:
   - component: {fileID: 841983551579686629}
   - component: {fileID: 841983551580735801}
   - component: {fileID: 841983551597135561}
+  - component: {fileID: 4629293060138218083}
   m_Layer: 0
-  m_Name: urb_bui_4_lod0 1 1
+  m_Name: Tall building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -184,6 +185,20 @@ LODGroup:
     renderers:
     - renderer: {fileID: 841983551581113395}
   m_Enabled: 1
+--- !u!64 &4629293060138218083
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841983551578595837}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300004, guid: 3a6923a1482b2e84599c596ff5d74c1b, type: 3}
 --- !u!1 &841983551578605653
 GameObject:
   m_ObjectHideFlags: 0

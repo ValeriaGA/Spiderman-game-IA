@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 577398088852189587}
   - component: {fileID: 577398088853317613}
   - component: {fileID: 577398088869481925}
+  - component: {fileID: 8221979403173206093}
   m_Layer: 0
   m_Name: urb_bui_5_lod0 1
   m_TagString: Untagged
@@ -107,6 +108,20 @@ LODGroup:
     renderers:
     - renderer: {fileID: 577398088853302949}
   m_Enabled: 1
+--- !u!64 &8221979403173206093
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 577398088855291675}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: ecde5defbf8dfb34fb9fe3562bb81ce8, type: 3}
 --- !u!1 &577398088855326547
 GameObject:
   m_ObjectHideFlags: 0
