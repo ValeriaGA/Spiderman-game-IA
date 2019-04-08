@@ -75,5 +75,10 @@ namespace IA_Proyecto_1
         {
 
         }
+
+        //funciones por hacer
+        //funcion para instanciar a spiderman y otra para la mujer
+        //funcion para recibir el tamaño de la ciudad
+        //funcion para mover a spiderman y la mujer de un edificio a otro  
     }
 }
