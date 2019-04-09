@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.Windows.Speech;
 using System.Drawing;
-//using System.Speech.Synthesis;
+using System.Speech.Synthesis;
 
 namespace IA_Proyecto_1
 {
@@ -13,9 +13,11 @@ namespace IA_Proyecto_1
         private DictationRecognizer dictationRecognizer;
         private Dictionary<string, System.Action> actions = new Dictionary<string, System.Action>();
 
+        private ArrayList ins_web;
+
         List<UnityEngine.Vector3> pathPositions = new List<UnityEngine.Vector3>();
 
-        //SpeechSynthesizer synth = new SpeechSynthesizer();
+        //SpeechSynthesizer speaker;
 
         string[] modesArray = { "start", "progress", "finalized" };
 
@@ -38,6 +40,7 @@ namespace IA_Proyecto_1
         // Start is called before the first frame update
         public void Start()
         {
+            ins_web = new ArrayList();
             map = city.generateMap(length, width);
 
             //Debug.Log("Obstructed");
@@ -57,7 +60,9 @@ namespace IA_Proyecto_1
             dictationRecognizer = new DictationRecognizer();
             dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
             dictationRecognizer.Start();
-            //synth.SetOutputToDefaultAudioDevice();
+
+            //speaker = new SpeechSynthesizer();
+            //speaker.SelectVoice("Microsoft David Desktop");
         }
         private void DictationRecognizer_DictationResult(string text, ConfidenceLevel confidence)
         {
@@ -77,12 +82,9 @@ namespace IA_Proyecto_1
                 {
                     case "help":
                         Debug.Log("in spider help");
-                        //synth.Speak("To toggle diagonal say spider diagonal");
-                        //synth.Speak("To start the animation say spider find jane");
-                        //synth.Speak("To quit say good day");
-                        //speaker.SpeakAsync("To toggle diagonal say spider diagonal");
-                        //speaker.SpeakAsync("To start the animation say spider find jane");
-                        //speaker.SpeakAsync("To quit say good day");
+                        //speaker.SpeakAsync("to toggle diagonal say spider diagonal");
+                        //speaker.SpeakAsync("to start the animation say spider find jane");
+                        //speaker.SpeakAsync("to quit say good day");
                         break;
                     case "do":
                         if (tokens.Length >= 4)
@@ -131,12 +133,12 @@ namespace IA_Proyecto_1
                 {
                     case "help":
                         Debug.Log("in controls help");
-                        //speaker.SpeakAsync("To reset say control reset");
-                        //speaker.SpeakAsync("To randomize and reset say control random");
-                        //speaker.SpeakAsync("To set spider \'say controls set spider width value length value\'");
-                        //speaker.SpeakAsync("To set jane \'say controls set jane width value length value\'");
-                        //speaker.SpeakAsync("To set width say controls set width value");
-                        //speaker.SpeakAsync("To set length say controls set length value");
+                        //speaker.SpeakAsync("to reset say control reset");
+                        //speaker.SpeakAsync("to randomize and reset say control random");
+                        //speaker.SpeakAsync("to set spider say controls set spider width value length value");
+                        //speaker.SpeakAsync("to set jane say controls set jane width value length value");
+                        //speaker.SpeakAsync("to set width say controls set width value");
+                        //speaker.SpeakAsync("to set length say controls set length value");
                         break;
                     case "do":
                         if (tokens.Length >= 4)
@@ -159,16 +161,19 @@ namespace IA_Proyecto_1
                             {
                                 case "width":
                                     Debug.LogFormat("Set grid width to {0}. Redraw map to update.", tokens[2]);
+                                    //speaker.SpeakAsync("seting grid width to: " + tokens[2]);
                                     System.Int32.TryParse(tokens[3], out width);
                                     break;
                                 case "length":
                                     Debug.LogFormat("Set grid length to {0}. Redraw map to update.", tokens[2]);
+                                    //speaker.SpeakAsync("seting grid legnth to: " + tokens[2]);
                                     System.Int32.TryParse(tokens[3], out length);
                                     break;
                                 case "spider":
                                     if (tokens.Length > 6)
                                     {
                                         Debug.LogFormat("Set spider position to {0}, {1}", tokens[4], tokens[6]);
+                                        //speaker.SpeakAsync("seting spiders poslition to: " + tokens[4] + ", " + tokens[6]);
                                         int x, y;
                                         System.Int32.TryParse(tokens[4], out x);
                                         origin.X = x;
@@ -180,6 +185,7 @@ namespace IA_Proyecto_1
                                     if (tokens.Length > 6)
                                     {
                                         Debug.LogFormat("Set mary position to {0}, {1}", tokens[4], tokens[6]);
+                                        //speaker.SpeakAsync("seting marys poslition to: " + tokens[4] + ", " + tokens[6]);
                                         int x, y;
                                         System.Int32.TryParse(tokens[4], out x);
                                         goal.X = x;
@@ -197,15 +203,19 @@ namespace IA_Proyecto_1
                             {
                                 case "spider":
                                     Debug.LogFormat("Spider location is: {0}, {1}", origin.X, origin.Y);
+                                    //speaker.SpeakAsync("spider's location is: " + origin.X.ToString() + ", " + origin.Y.ToString());
                                     break;
                                 case "mary":
                                     Debug.LogFormat("mary location is: {0}, {1}", goal.X, goal.Y);
+                                    //speaker.SpeakAsync("mary's location is: " + goal.X.ToString() + ", " + goal.Y.ToString());
                                     break;
                                 case "width":
                                     Debug.LogFormat("Current width is: {0}", width);
+                                    //speaker.SpeakAsync("Current width is " + width.ToString());
                                     break;
                                 case "length":
                                     Debug.LogFormat("Current length is: {0}", length);
+                                    //speaker.SpeakAsync("Current length is: " + length.ToString());
                                     break;
                             }
                         }
@@ -217,6 +227,7 @@ namespace IA_Proyecto_1
         private void helpCommmands()
         {
             Debug.Log("Preface your command with spider or control");
+            //speaker.SpeakAsync("Preface your command with spider or control");
         }
 
         // Makes the object follow the path from positions in the pathPositions
@@ -255,6 +266,7 @@ namespace IA_Proyecto_1
                 Vector3 pos = new Vector3(position.X * 3, 9, position.Y * 3);
                 GameObject web2 = Instantiate(web, pos, Quaternion.identity);
                 web2.transform.Rotate(new Vector3(90, 0, 0));
+                ins_web.Add(web2);
             }
         }
 
@@ -267,6 +279,11 @@ namespace IA_Proyecto_1
 
         private void RandomCity()
         {
+            //foreach(GameObject web in ins_web)
+            //{
+            //    Destroy(web);
+            //}
+
             map = city.generateMap(Random.Range(0, 35), Random.Range(0, 35));
             origin = city.generateOrigin(map);
             goal = city.generateGoal(map);

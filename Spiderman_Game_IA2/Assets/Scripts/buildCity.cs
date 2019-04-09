@@ -13,16 +13,31 @@ namespace IA_Proyecto_1
         public GameObject[] buildings;
         public GameObject[] people;
 
+        private ArrayList ins_buildings;
+        private GameObject ins_mary;
+        private GameObject ins_spider;
+
         private int buildingFootprint = 3;
         // Start is called before the first frame update
         void Start()
         {
-
+            ins_spider = new GameObject();
+            ins_mary = new GameObject();
+            ins_buildings = new ArrayList();
         }
-
-        // Uninstantiate previous objects?
+        
         public City generateMap(int length, int width)
         {
+            if (ins_buildings.Count != 0)
+            {
+                foreach (GameObject building in ins_buildings)
+                {
+                    Destroy(building);
+                }
+                ins_buildings.Clear();
+            }
+
+
             City map = new City(length, width);
 
             //float seed = Random.Range(0, 100);
@@ -34,7 +49,8 @@ namespace IA_Proyecto_1
                     //int result = (int)(Mathf.PerlinNoise(w / 10.0f + seed, h / 10.0f + seed) * 10);
                     Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint);
                     int n = Random.Range(0, buildings.Length);
-                    Instantiate(buildings[n], pos, Quaternion.identity);
+                    GameObject building = Instantiate(buildings[n], pos, Quaternion.identity);
+                    ins_buildings.Add(building);
                     if (n == 4)
                     {
                         map.obstructed.Add(new Point(w, h));
@@ -47,6 +63,8 @@ namespace IA_Proyecto_1
 
         public Point generateOrigin(City map)
         {
+            if (ins_spider != null) Destroy(ins_spider);
+
             Point origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(origin))
             {
@@ -54,21 +72,23 @@ namespace IA_Proyecto_1
             }
 
             Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
-            Instantiate(people[1], posSpiderman, Quaternion.identity);
+            ins_spider = Instantiate(people[1], posSpiderman, Quaternion.identity);
 
             return origin;
         }
 
         public Point generateGoal(City map)
         {
+            if (ins_mary != null) Destroy(ins_mary);
+
             Point goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(goal))
             {
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
 
-            Vector3 posWoman = new Vector3(goal.X + 1 * buildingFootprint, 4, goal.Y * buildingFootprint);
-            Instantiate(people[0], posWoman, Quaternion.identity);
+            Vector3 posWoman = new Vector3((float) (goal.X + 0.25) * buildingFootprint, 4, goal.Y * buildingFootprint);
+            ins_mary = Instantiate(people[1], posWoman, Quaternion.identity);
 
             return goal;
         }
