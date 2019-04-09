@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IA_Proyecto_1
 {
-    class AStar
+    public class AStar
     {
         public Dictionary<Point, Point> cameFrom = new Dictionary<Point, Point>();
         public Dictionary<Point, int> costSoFar = new Dictionary<Point, int>();
@@ -38,7 +38,7 @@ namespace IA_Proyecto_1
             }
         }
 
-        public AStar(Grid graph, Point origin, Point goal, Boolean diagonal)
+        public AStar(City graph, Point origin, Point goal, Boolean diagonal)
         {
 			this.diagonals = diagonal;
             var nodes = new MinHeap();

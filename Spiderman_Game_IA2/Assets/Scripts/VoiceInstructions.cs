@@ -9,7 +9,6 @@ namespace IA_Proyecto_1
 {
     public class VoiceInstructions : MonoBehaviour
     {
-        private KeywordRecognizer keywordRecognizer;
         private DictationRecognizer dictationRecognizer;
         private Dictionary<string, System.Action> actions = new Dictionary<string, System.Action>();
 
@@ -19,11 +18,18 @@ namespace IA_Proyecto_1
 
         string[] tokens;
 
-        bool diagonal = false; // Tells if the grid support diagonals or not
+        private System.Boolean diagonal = false;
 
         public int m, n, a; // These atributes set the size to the city.
 
+        private int length = 20;
+        private int width = 20;
+
         public buildCity city;
+
+        private City map;
+        private Point origin;
+        private Point goal;
 
         Point SpiderManPos { get; set; }
         Point MaryJanePos { get; set; }
@@ -31,22 +37,14 @@ namespace IA_Proyecto_1
         // Start is called before the first frame update
         public void Start()
         {
+            map = city.generateMap(length, width);
+            origin = city.generateOrigin(map);
+            goal = city.generateGoal(map);
+
             // start
             actions.Add("spider", spiderCommands);
             actions.Add("controls", controlsCommands);
             actions.Add("help", helpCommmands);
-
-            //string[] c = { "good day", "help", "spider", "controls", "do you copy", "find", "diagonal", "reset", "random", "obstacles", "jane",
-            //    "alpha", "bravo", "charlie", "delta", "echo",  "foxtrot", "golf", "hotel", "india", "juliet", "kilo", "lima", "mike",
-            //    "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uniform", "viktor", "whiskey", "xray", "yankee", "zulu"};
-            //List<string> commands = new List<string>(c);
-
-            //for (var i = 0; i <= 9; i++)
-            //    commands.Add(i.ToString());
-
-            //keywordRecognizer = new KeywordRecognizer(commands.ToArray());
-            //keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
-            //keywordRecognizer.Start();
 
             dictationRecognizer = new DictationRecognizer();
             dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
@@ -57,14 +55,10 @@ namespace IA_Proyecto_1
         {
             Debug.Log(text);
             tokens = text.Split(' ');
-            actions[tokens[0]].Invoke();
-        }
-
-        private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
-        {
-            Debug.Log(speech.text);
-            tokens = speech.text.Split(' ');
-            actions[tokens[0]].Invoke();
+            if (actions.ContainsKey(tokens[0]))
+            {
+                actions[tokens[0]].Invoke();
+            }
         }
 
         private void spiderCommands()
@@ -96,6 +90,8 @@ namespace IA_Proyecto_1
                             {
                                 //speaker.SpeakAsync("wilco, Spider");
                                 Debug.Log("wilco");
+                                // Navigate Astar solution path if it exists
+                                SaveHer();
                             }
                         }
                         break;
@@ -133,9 +129,8 @@ namespace IA_Proyecto_1
                         //speaker.SpeakAsync("To set obstacle say controls set obstacle location");
                         //speaker.SpeakAsync("To set spider say controls set spider location");
                         //speaker.SpeakAsync("To set jane say controls set jane location");
-                        //speaker.SpeakAsync("To set m say controls set mike value");
-                        //speaker.SpeakAsync("To set n say controls set november value");
-                        //speaker.SpeakAsync("To toggle web say controls web");
+                        //speaker.SpeakAsync("To set width say controls set mike value");
+                        //speaker.SpeakAsync("To set length say controls set november value");
                         break;
                     case "do":
                         if (tokens.Length >= 4)
@@ -151,8 +146,19 @@ namespace IA_Proyecto_1
                         Debug.Log("reseting to starting position");
                         //speaker.SpeakAsync("Reseting to starting position, control");
                         break;
-                    case "random":
-                        Debug.Log("in controls random");
+                    case "mike":
+                        if (tokens.Length > 2)
+                        {
+                            Debug.LogFormat("Set grid width to {0}. Redraw map to update.", tokens[2]);
+                            System.Int32.TryParse(tokens[2], out width);
+                        }
+                        break;
+                    case "november":
+                        if (tokens.Length > 2)
+                        {
+                            Debug.LogFormat("Set grid length to {0}. Redraw map to update.", tokens[2]);
+                            System.Int32.TryParse(tokens[2], out length);
+                        }
                         break;
                 }
             }
@@ -163,6 +169,24 @@ namespace IA_Proyecto_1
             Debug.Log("Preface your command with spider or control");
         }
 
+        private void FindPath()
+        {
+            AStar astar = new AStar(map, origin, goal, diagonal);
+            if (astar.cameFrom.ContainsKey(goal))
+            {
+                //Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
+                Point current = goal;
+                while (current != origin)
+                {
+                    //Debug.LogFormat("({0},{1}) <- ", current.X.ToString(), current.Y.ToString());
+                    current = astar.cameFrom[current];
+                }
+            }
+            else
+            {
+                Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
+            }
+        }
 
         private void SaveHer()
         {
@@ -177,9 +201,9 @@ namespace IA_Proyecto_1
         // Makes the object follow the path from positions in the pathPositions
         void FollowPath(Vector2 MaryJanePos)
         {
-            Grid cityGrid = new Grid(m, n);
+            City cityGrid = new City(m, n);
             Dictionary<Point, Point> pathDict = new Dictionary<Point, Point>();
-            AStar astar = new AStar(cityGrid, city.getOrigin(), city.getGoal(), diagonal);
+            AStar astar = new AStar(cityGrid, origin, goal, diagonal);
             pathDict = astar.cameFrom;
 
             // From path to array
@@ -205,10 +229,9 @@ namespace IA_Proyecto_1
 
         private void CreateCity()
         {
-            // Calls the script that handles city creation
-            city.m = this.m;
-            city.n = this.n;
-            city.build_city(m,n);
+            map = city.generateMap(length, width);
+            origin = city.generateOrigin(map);
+            goal = city.generateGoal(map);
         }
 
         private void PlaceSpiderMan()
@@ -239,7 +262,7 @@ namespace IA_Proyecto_1
         // Update is called once per frame
         void Update()
         {
-            System.Console.WriteLine(keywordRecognizer);
+            
         }
     }
 }
