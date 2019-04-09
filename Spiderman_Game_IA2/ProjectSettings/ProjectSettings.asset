@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 15
-  productGUID: 00000000000000000000000000000000
+  productGUID: 914feacd159708b42b996030d2741c5e
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -592,7 +592,7 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   cloudProjectId: 39a0dc07-d574-4015-b339-f5624df5efeb
   framebufferDepthMemorylessMode: 0
-  projectName: 
+  projectName: Spiderman_Game_IA2
   organizationId: valeriaga
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0

@@ -12,11 +12,13 @@ namespace IA_Proyecto_1
         private Grid map;
         private int buildingFootprint = 3;
 		private System.Boolean diagonal = false;
+        private int n = 20;
+        private int m = 20;
 
         // Start is called before the first frame update
         void Start()
         {
-            map = new Grid(20, 20);
+            map = new Grid(n, m);
             //float seed = Random.Range(0, 100);
 
             for (int h = 0; h < map.height; h++)
@@ -45,7 +47,7 @@ namespace IA_Proyecto_1
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
 
-            Vector3 posWoman = new Vector3(goal.X * buildingFootprint, 6, goal.Y * buildingFootprint);
+            Vector3 posWoman = new Vector3(goal.X+1 * buildingFootprint, 4, goal.Y * buildingFootprint);
             Instantiate(people[0], posWoman, Quaternion.identity);
 
             Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
@@ -68,6 +70,24 @@ namespace IA_Proyecto_1
                 Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
             }
 
+        
+        }
+
+        public void set_city_size(int n, int m)
+        {
+            this.n = n;
+            this.m = m;
+            
+        }
+        public void moveSpiderman(Point newPosition)
+        {
+            
+            
+        }
+        public void moveWoman(Point newPosition)
+        {
+            
+            
         }
 
         // Update is called once per frame
@@ -75,6 +95,8 @@ namespace IA_Proyecto_1
         {
 
         }
+
+
 
         //funciones por hacer
         //funcion para recibir el tamaño de la ciudad set_city_size(int n, int m)
