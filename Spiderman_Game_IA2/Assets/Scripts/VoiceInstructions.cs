@@ -220,6 +220,7 @@ namespace IA_Proyecto_1
         private void ShowWeb()
         {
             // Call whatever the function it is to show the web - hope it exists
+        }
             
         private void FindPath()
         {
