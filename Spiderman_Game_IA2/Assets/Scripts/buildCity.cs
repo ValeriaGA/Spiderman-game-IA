@@ -12,12 +12,6 @@ namespace IA_Proyecto_1
 
         public GameObject[] buildings;
         public GameObject[] people;
-        private Grid map;   // The map itself
-        public AStar astar { get; set; } // Holds the path
-        private int buildingFootprint = 3;
-		private System.Boolean diagonal = false;
-        private int length = 20;
-        private int width = 20;
 
         private int buildingFootprint = 3;
         // Start is called before the first frame update
@@ -62,95 +56,20 @@ namespace IA_Proyecto_1
             Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
             Instantiate(people[1], posSpiderman, Quaternion.identity);
 
-
-            AStar astar = new AStar(map, origin, goal, diagonal);
-            if (astar.cameFrom.ContainsKey(goal))
-            {
-                Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
-                Point current = goal;
-                while (current != origin)
-                {
-                    Debug.LogFormat("({0},{1}) <- ", current.X.ToString(), current.Y.ToString());
-                    current = astar.cameFrom[current];
-                }
-            }
-            else
-            {
-                Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
-            }
-
-        
+            return origin;
         }
 
-        public void init(int m, int n, Point origin, Point goal)
+        public Point generateGoal(City map)
         {
-            set_city_size(m, n);
-            build_city(origin, goal);
-        }
-
-        public void set_city_size(int m, int n)
-        {
-            this.length = m;
-            this.width = n;
-        }
-
-        public void build_city(Point origin, Point goal)
-        {
-            map = new Grid(length, width);
-
-            //Create city
-            for (int h = 0; h < map.height; h++)
-            {
-                for (int w = 0; w < map.width; w++)
-                {
-                    
-                    Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint); 
-                    int n = Random.Range(0, buildings.Length);
-                    Instantiate(buildings[n], pos, Quaternion.identity);
-                    if (n == 5)
-                    {
-                        map.obstructed.Add(new Point(w, h));
-                    }
-                }
-            }
-            /*
-            //create path
-            Point origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
-            while (map.obstructed.Contains(origin))
-            {
-                origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
-            }
-                
             Point goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(goal))
             {
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
-            */
 
             Vector3 posWoman = new Vector3(goal.X + 1 * buildingFootprint, 4, goal.Y * buildingFootprint);
             Instantiate(people[0], posWoman, Quaternion.identity);
 
-            Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
-            Instantiate(people[1],posSpiderman , Quaternion.identity);
-
-
-            //found the path
-            astar = new AStar(map, origin, goal, diagonal);
-            if (astar.cameFrom.ContainsKey(goal))
-            {
-                Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
-                Point current = goal;
-                while (current != origin)
-                {
-                    Debug.LogFormat("({0},{1}) <- ", current.X.ToString(), current.Y.ToString());
-                    current = astar.cameFrom[current];
-                }
-            }
-            else
-            {
-                Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
-            }
             return goal;
         }
         
