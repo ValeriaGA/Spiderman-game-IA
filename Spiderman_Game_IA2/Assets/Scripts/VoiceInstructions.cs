@@ -9,29 +9,37 @@ namespace IA_Proyecto_1
 {
     public class VoiceInstructions : MonoBehaviour
     {
-        private KeywordRecognizer keywordRecognizer;
+        private DictationRecognizer dictationRecognizer;
         private Dictionary<string, System.Action> actions = new Dictionary<string, System.Action>();
 
         List<UnityEngine.Vector3> pathPositions = new List<UnityEngine.Vector3>();
 
         string[] modesArray = { "start", "progress", "finalized" };
 
-        bool diagonal = false; // Tells if the grid support diagonals or not
+        string[] tokens;
+
+        private System.Boolean diagonal = false;
 
         public int m, n, a; // These atributes set the size to the city.
 
-        buildCity city = new buildCity();
+        //buildCity city = new buildCity();
 
         GameObject Spiderman;
         GameObject Maryjane;
+        private int length = 20;
+        private int width = 20;
+
+        public buildCity city;
+
+        private City map;
+        private Point origin;
+        private Point goal;
 
         Point SpiderManPos { get; set; }
         Point MaryJanePos { get; set; }
 
-        
-
         // Start is called before the first frame update
-        void Start()
+        public void Start()
         {
             city = new buildCit();
             Spiderman = city.people[1];
@@ -77,18 +85,159 @@ namespace IA_Proyecto_1
             keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
             keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
             keywordRecognizer.Start();
+            map = city.generateMap(length, width);
+            origin = city.generateOrigin(map);
+            goal = city.generateGoal(map);
+
+            // start
+            actions.Add("spider", spiderCommands);
+            actions.Add("controls", controlsCommands);
+            actions.Add("help", helpCommmands);
+
+            dictationRecognizer = new DictationRecognizer();
+            dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
+            dictationRecognizer.Start();
+            Debug.Log("Starting");
+        }
+        private void DictationRecognizer_DictationResult(string text, ConfidenceLevel confidence)
+        {
+            Debug.Log(text);
+            tokens = text.Split(' ');
+            if (actions.ContainsKey(tokens[0]))
+            {
+                actions[tokens[0]].Invoke();
+            }
         }
 
-        private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
+        private void spiderCommands()
         {
-            Debug.Log(speech.text);
-            actions[speech.text].Invoke();
+            if (tokens.Length > 1)
+            {
+                switch (tokens[1].ToLower())
+                {
+                    case "help":
+                        Debug.Log("in spider help");
+                        //speaker.SpeakAsync("To toggle diagonal say spider diagonal");
+                        //speaker.SpeakAsync("To start the animation say spider find jane");
+                        //speaker.SpeakAsync("To quit say good day");
+                        break;
+                    case "do":
+                        if (tokens.Length >= 4)
+                        {
+                            if (tokens[2].ToLower() == "you" && tokens[3].ToLower() == "copy")
+                            {
+                                Debug.Log("affirm");
+                                //speaker.SpeakAsync("Affirm, Spider");
+                            }
+                        }
+                        break;
+                    case "find":
+                        if (tokens.Length >= 3)
+                        {
+                            if (tokens[2].ToLower() == "jane")
+                            {
+                                //speaker.SpeakAsync("wilco, Spider");
+                                Debug.Log("wilco");
+                                // Navigate Astar solution path if it exists
+                                SaveHer();
+                            }
+                        }
+                        break;
+                    case "diagonal":
+                        if (diagonal == true)
+                        {
+                            diagonal = false;
+                            //speaker.SpeakAsync("diagonal set to off, spider");
+                            Debug.Log("diagonal off");
+                        }
+                        else
+                        {
+                            diagonal = true;
+                            //speaker.SpeakAsync("diagonal set to on, spider");
+                            Debug.Log("diagonal on");
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void controlsCommands()
+        {
+            if (tokens.Length > 1)
+            {
+                switch (tokens[1].ToLower())
+                {
+                    case "help":
+                        Debug.Log("in controls help");
+                        //speaker.SpeakAsync("To reset spider say control reset");
+                        //speaker.SpeakAsync("To randomize everything say controls random");
+                        //speaker.SpeakAsync("To randomize obstacles say controls random obstacles");
+                        //speaker.SpeakAsync("To randomize spider say controls random spider");
+                        //speaker.SpeakAsync("To randomize jane say controls random jane");
+                        //speaker.SpeakAsync("To set obstacle say controls set obstacle location");
+                        //speaker.SpeakAsync("To set spider say controls set spider location");
+                        //speaker.SpeakAsync("To set jane say controls set jane location");
+                        //speaker.SpeakAsync("To set width say controls set mike value");
+                        //speaker.SpeakAsync("To set length say controls set november value");
+                        break;
+                    case "do":
+                        if (tokens.Length >= 4)
+                        {
+                            if (tokens[2].ToLower() == "you" && tokens[3].ToLower() == "copy")
+                            {
+                                Debug.Log("loud and clear");
+                                //speaker.SpeakAsync("loud and clear, control");
+                            }
+                        }
+                        break;
+                    case "reset":
+                        Debug.Log("reseting to starting position");
+                        //speaker.SpeakAsync("Reseting to starting position, control");
+                        break;
+                    case "mike":
+                        if (tokens.Length > 2)
+                        {
+                            Debug.LogFormat("Set grid width to {0}. Redraw map to update.", tokens[2]);
+                            System.Int32.TryParse(tokens[2], out width);
+                        }
+                        break;
+                    case "november":
+                        if (tokens.Length > 2)
+                        {
+                            Debug.LogFormat("Set grid length to {0}. Redraw map to update.", tokens[2]);
+                            System.Int32.TryParse(tokens[2], out length);
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void helpCommmands()
+        {
+            Debug.Log("Preface your command with spider or control");
         }
 
         private void ShowWeb()
         {
             // Call whatever the function it is to show the web - hope it exists
             
+        private void FindPath()
+        {
+            AStar astar = new AStar(map, origin, goal, diagonal);
+            if (astar.cameFrom.ContainsKey(goal))
+            {
+                //Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
+                Point current = goal;
+                while (current != origin)
+                {
+                    //Debug.LogFormat("({0},{1}) <- ", current.X.ToString(), current.Y.ToString());
+                    current = astar.cameFrom[current];
+                }
+            }
+            else
+            {
+                Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
+            }
         }
 
         private void SaveHer()
@@ -143,6 +292,9 @@ namespace IA_Proyecto_1
             city.m = this.m;
             city.n = this.n;
             city.init(m,n, SpidermanPoint, MaryjanePoint);
+            map = city.generateMap(length, width);
+            origin = city.generateOrigin(map);
+            goal = city.generateGoal(map);
         }
 
         private Point getSpidermanPosition()
@@ -197,7 +349,7 @@ namespace IA_Proyecto_1
         // Update is called once per frame
         void Update()
         {
-            System.Console.WriteLine(keywordRecognizer);
+            
         }
     }
 }

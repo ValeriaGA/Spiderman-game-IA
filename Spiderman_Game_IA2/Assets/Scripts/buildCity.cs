@@ -19,10 +19,18 @@ namespace IA_Proyecto_1
         private int length = 20;
         private int width = 20;
 
+        private int buildingFootprint = 3;
         // Start is called before the first frame update
         void Start()
         {
-            map = new Grid(length, width);
+
+        }
+
+        // Uninstantiate previous objects?
+        public City generateMap(int length, int width)
+        {
+            City map = new City(length, width);
+
             //float seed = Random.Range(0, 100);
 
             for (int h = 0; h < map.height; h++)
@@ -30,7 +38,7 @@ namespace IA_Proyecto_1
                 for (int w = 0; w < map.width; w++)
                 {
                     //int result = (int)(Mathf.PerlinNoise(w / 10.0f + seed, h / 10.0f + seed) * 10);
-                    Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint); 
+                    Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint);
                     int n = Random.Range(0, buildings.Length);
                     Instantiate(buildings[n], pos, Quaternion.identity);
                     if (n == 5)
@@ -39,23 +47,20 @@ namespace IA_Proyecto_1
                     }
                 }
             }
+
+            return map;
+        }
+
+        public Point generateOrigin(City map)
+        {
             Point origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(origin))
             {
                 origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
-                
-            Point goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
-            while (map.obstructed.Contains(goal))
-            {
-                goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
-            }
-
-            Vector3 posWoman = new Vector3(goal.X+1 * buildingFootprint, 4, goal.Y * buildingFootprint);
-            Instantiate(people[0], posWoman, Quaternion.identity);
 
             Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
-            Instantiate(people[1],posSpiderman , Quaternion.identity);
+            Instantiate(people[1], posSpiderman, Quaternion.identity);
 
 
             AStar astar = new AStar(map, origin, goal, diagonal);
@@ -123,8 +128,7 @@ namespace IA_Proyecto_1
             }
             */
 
-            //instantiate spiderman and the woman
-            Vector3 posWoman = new Vector3(goal.X+1 * buildingFootprint, 4, goal.Y * buildingFootprint);
+            Vector3 posWoman = new Vector3(goal.X + 1 * buildingFootprint, 4, goal.Y * buildingFootprint);
             Instantiate(people[0], posWoman, Quaternion.identity);
 
             Vector3 posSpiderman = new Vector3(origin.X * buildingFootprint, 5, origin.Y * buildingFootprint);
@@ -147,8 +151,9 @@ namespace IA_Proyecto_1
             {
                 Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
             }
+            return goal;
         }
-
+        
 
         public void moveSpiderman(Point newPosition)
         {

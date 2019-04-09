@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IA_Proyecto_1
 {
-    class Grid
+    public class City
     {
         public int width, height;
 
@@ -25,7 +25,7 @@ namespace IA_Proyecto_1
 
         public HashSet<Point> obstructed = new HashSet<Point>();
 
-        public Grid(int width, int height)
+        public City(int width, int height)
         {
             this.width = width;
             this.height = height;
