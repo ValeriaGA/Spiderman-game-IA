@@ -18,6 +18,9 @@ namespace IA_Proyecto_1
         private int length = 20;
         private int width = 20;
 
+        private Point origin;
+        private Point goal;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -38,13 +41,13 @@ namespace IA_Proyecto_1
                     }
                 }
             }
-            Point origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
+            origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(origin))
             {
                 origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
                 
-            Point goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
+            goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(goal))
             {
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
@@ -84,9 +87,11 @@ namespace IA_Proyecto_1
         }
 
 
-        public void build_city()
+        public void build_city(int pLength, int pWidth)
         {
-            map = new Grid(length, width);
+            this.length = pLength;
+            this.width = pWidth;
+            map = new Grid(this.length, this.width);
 
             //Create city
             for (int h = 0; h < map.height; h++)
@@ -105,13 +110,13 @@ namespace IA_Proyecto_1
             }
 
             //create path
-            Point origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
+            origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(origin))
             {
                 origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
                 
-            Point goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
+            goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(goal))
             {
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
@@ -153,6 +158,16 @@ namespace IA_Proyecto_1
         {
             people[0].transform.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);
             
+        }
+
+        public Point getOrigin()
+        {
+            return this.origin;
+        }
+
+        public Point getGoal()
+        {
+            return this.goal;
         }
 
         // Update is called once per frame

@@ -78,7 +78,7 @@ namespace IA_Proyecto_1
         {
             Grid cityGrid = new Grid(m, n);
             Dictionary<Point, Point> pathDict = new Dictionary<Point, Point>();
-            //AStar astar = new AStar(cityGrid, );
+            AStar astar = new AStar(cityGrid, city.getOrigin(), city.getGoal(), diagonal);
             pathDict = astar.cameFrom;
 
             // From path to array
@@ -107,21 +107,21 @@ namespace IA_Proyecto_1
             // Calls the script that handles city creation
             city.m = this.m;
             city.n = this.n;
-            city.init(m,n);
+            city.build_city(m,n);
         }
 
         private void PlaceSpiderMan()
         {
             // Here it is just necesary to make a transform
-            Point spidermanPos = transform.position;
-            city.moveSpiderman(spidermanNewPos);
+            //Point spidermanPos = transform.position;
+            //city.moveSpiderman(spidermanNewPos);
         }
 
         private void PlaceMaryJane()
         {
-            var MaryJane = GameObject.Find("Sphere");
-            Point spidermanPos = transform.position;
-            city.moveSpiderman(spidermanNewPos);
+            //var MaryJane = GameObject.Find("Sphere");
+            //Point spidermanPos = transform.position;
+            //city.moveSpiderman(spidermanNewPos);
         }
 
         private void Restart()
