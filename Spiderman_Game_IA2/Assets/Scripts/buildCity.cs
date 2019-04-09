@@ -35,7 +35,7 @@ namespace IA_Proyecto_1
                     Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint);
                     int n = Random.Range(0, buildings.Length);
                     Instantiate(buildings[n], pos, Quaternion.identity);
-                    if (n == 5)
+                    if (n == 4)
                     {
                         map.obstructed.Add(new Point(w, h));
                     }
