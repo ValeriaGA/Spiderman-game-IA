@@ -20,18 +20,41 @@ namespace IA_Proyecto_1
 
         public int m, n, a; // These atributes set the size to the city.
 
+        buildCity city = new buildCity();
+
+        GameObject Spiderman;
+        GameObject Maryjane;
+
         Point SpiderManPos { get; set; }
         Point MaryJanePos { get; set; }
 
-        buildCity city = new buildCity();
+        
 
         // Start is called before the first frame update
         void Start()
         {
+            city = new buildCit();
+            Spiderman = city.people[1];
+            Maryjane = city.people[0];
+
             // start
             actions.Add("save her", SaveHer);
+            actions.Add("show web", ShowWeb);
             actions.Add("create city", CreateCity);
             actions.Add("place spider man", PlaceSpiderMan);
+            actions.Add("place mary jane", PlaceMaryJane);
+
+            // Spiderman movements
+            actions.Add("move spider man up", MoveSpiderManUp);
+            actions.Add("move spider man down", MoveSpiderManDown);
+            actions.Add("move spider man left", MoveSpiderManLeft);
+            actions.Add("move spider man right", MoveSpiderManRight);
+
+            // Mary Jane movements
+            actions.Add("move mary jane up", MoveMaryJaneUp);
+            actions.Add("move mary jane down", MoveMaryJaneDown);
+            actions.Add("move mary jane left", MoveMaryJaneLeft);
+            actions.Add("move mary jane right", MoveMaryJaneRight);
 
             // progress
 
@@ -62,6 +85,11 @@ namespace IA_Proyecto_1
             actions[speech.text].Invoke();
         }
 
+        private void ShowWeb()
+        {
+            // Call whatever the function it is to show the web - hope it exists
+            
+        }
 
         private void SaveHer()
         {
@@ -69,16 +97,16 @@ namespace IA_Proyecto_1
             if (MaryJane)
             {
                 var MaryJanePos = (Vector2)MaryJane.transform.position; //Vector2, z ignored
-                FollowPath(MaryJanePos);
+                //FollowPath(MaryJanePos);
             }
         }
 
         // Makes the object follow the path from positions in the pathPositions
         void FollowPath(Vector2 MaryJanePos)
         {
-            Grid cityGrid = new Grid(m, n);
+            // Grid cityGrid = new Grid(m, n);
             Dictionary<Point, Point> pathDict = new Dictionary<Point, Point>();
-            //AStar astar = new AStar(cityGrid, );
+            AStar astar = city.astar;
             pathDict = astar.cameFrom;
 
             // From path to array
@@ -94,34 +122,65 @@ namespace IA_Proyecto_1
                 pos = pathDict[pos];
             }
             pathList.Reverse();
+            System.Console.Out(pathList);
 
             foreach (var position in pathList)
             {
-                //transform.Translate(position);
-                transform.position = (Vector3)position;
+                city.moveSpiderman(position);
             }
         }
 
         private void CreateCity()
         {
             // Calls the script that handles city creation
+
+            // Spiderman position
+            Point SpidermanPoint = getSpidermanPosition();
+
+            // Maryjane position
+            Point MaryjanePoint = getMaryjanePosition();
+
             city.m = this.m;
             city.n = this.n;
-            city.init(m,n);
+            city.init(m,n, SpidermanPoint, MaryjanePoint);
+        }
+
+        private Point getSpidermanPosition()
+        {
+            var SpiderMan = GameObject.Find("Spiderman");
+            var SpidermanPos = (Vector2)SpiderMan.transform.position; //Vector2, z ignored
+            Point SpidermanPoint;
+            SpidermanPoint.X = (int)SpidermanPos.x;
+            SpidermanPoint.Y = (int)SpidermanPos.y;
+            return SpidermanPoint;
+        }
+
+        private Point getMaryjanePosition()
+        {
+            var MaryJane = GameObject.Find("Maryjane");
+            var MaryjanePos = (Vector2)MaryJane.transform.position; //Vector2, z ignored
+            Point MaryjanePoint;
+            MaryjanePoint.X = (int)MaryjanePos.x;
+            MaryjanePoint.Y = (int)MaryjanePos.y;
+            return MaryjanePoint;
         }
 
         private void PlaceSpiderMan()
-        {
+        {/*
             // Here it is just necesary to make a transform
+            var Spiderman = GameObject.Find("Spiderman");
             Point spidermanPos = transform.position;
+            city.moveSpiderman(spidermanNewPos);*/
+
+
             city.moveSpiderman(spidermanNewPos);
         }
 
         private void PlaceMaryJane()
         {
-            var MaryJane = GameObject.Find("Sphere");
-            Point spidermanPos = transform.position;
-            city.moveSpiderman(spidermanNewPos);
+            /*var Maryjane = GameObject.Find("Maryjane");
+            Point MaryjanePos = Maryjane.transform.position;
+            city.moveMaryjane(NewPos);*/    
         }
 
         private void Restart()

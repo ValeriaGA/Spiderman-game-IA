@@ -12,7 +12,8 @@ namespace IA_Proyecto_1
 
         public GameObject[] buildings;
         public GameObject[] people;
-        private Grid map;
+        private Grid map;   // The map itself
+        public AStar astar { get; set; } // Holds the path
         private int buildingFootprint = 3;
 		private System.Boolean diagonal = false;
         private int length = 20;
@@ -76,15 +77,19 @@ namespace IA_Proyecto_1
         
         }
 
-        public void set_city_size(int n, int m)
+        public void init(int m, int n, Point origin, Point goal)
         {
-            this.length = n;
-            this.width = m;
-            
+            set_city_size(m, n);
+            build_city(origin, goal);
         }
 
+        public void set_city_size(int m, int n)
+        {
+            this.length = m;
+            this.width = n;
+        }
 
-        public void build_city()
+        public void build_city(Point origin, Point goal)
         {
             map = new Grid(length, width);
 
@@ -103,7 +108,7 @@ namespace IA_Proyecto_1
                     }
                 }
             }
-
+            /*
             //create path
             Point origin = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             while (map.obstructed.Contains(origin))
@@ -116,6 +121,7 @@ namespace IA_Proyecto_1
             {
                 goal = new Point(Random.Range(0, map.height - 1), Random.Range(0, map.width - 1));
             }
+            */
 
             //instantiate spiderman and the woman
             Vector3 posWoman = new Vector3(goal.X+1 * buildingFootprint, 4, goal.Y * buildingFootprint);
@@ -126,7 +132,7 @@ namespace IA_Proyecto_1
 
 
             //found the path
-            AStar astar = new AStar(map, origin, goal, diagonal);
+            astar = new AStar(map, origin, goal, diagonal);
             if (astar.cameFrom.ContainsKey(goal))
             {
                 Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
@@ -146,12 +152,12 @@ namespace IA_Proyecto_1
 
         public void moveSpiderman(Point newPosition)
         {
-            people[1].transforme.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);   
+            people[1].transform.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);   
             
         }
         public void moveWoman(Point newPosition)
         {
-            people[0].transforme.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);
+            people[0].transform.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);
             
         }
 
