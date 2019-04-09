@@ -22,10 +22,6 @@ namespace IA_Proyecto_1
 
         public int m, n, a; // These atributes set the size to the city.
 
-        //buildCity city = new buildCity();
-
-        GameObject Spiderman;
-        GameObject Maryjane;
         private int length = 20;
         private int width = 20;
 
@@ -35,56 +31,9 @@ namespace IA_Proyecto_1
         private Point origin;
         private Point goal;
 
-        Point SpiderManPos { get; set; }
-        Point MaryJanePos { get; set; }
-
         // Start is called before the first frame update
         public void Start()
         {
-            city = new buildCit();
-            Spiderman = city.people[1];
-            Maryjane = city.people[0];
-
-            // start
-            actions.Add("save her", SaveHer);
-            actions.Add("show web", ShowWeb);
-            actions.Add("create city", CreateCity);
-            actions.Add("place spider man", PlaceSpiderMan);
-            actions.Add("place mary jane", PlaceMaryJane);
-
-            // Spiderman movements
-            actions.Add("move spider man up", MoveSpiderManUp);
-            actions.Add("move spider man down", MoveSpiderManDown);
-            actions.Add("move spider man left", MoveSpiderManLeft);
-            actions.Add("move spider man right", MoveSpiderManRight);
-
-            // Mary Jane movements
-            actions.Add("move mary jane up", MoveMaryJaneUp);
-            actions.Add("move mary jane down", MoveMaryJaneDown);
-            actions.Add("move mary jane left", MoveMaryJaneLeft);
-            actions.Add("move mary jane right", MoveMaryJaneRight);
-
-            // progress
-
-
-            //Numbers
-            actions.Add("zero", Back);
-            actions.Add("one", Back);
-            actions.Add("two", Back);
-            actions.Add("three", Back);
-            actions.Add("four", Back);
-            actions.Add("five", Back);
-            actions.Add("six", Back);
-            actions.Add("seven", Back);
-            actions.Add("eight", Back);
-            actions.Add("nine", Back);
-
-            // finalized
-            actions.Add("restart", Restart);
-
-            keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
-            keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
-            keywordRecognizer.Start();
             map = city.generateMap(length, width);
             origin = city.generateOrigin(map);
             goal = city.generateGoal(map);
@@ -139,7 +88,7 @@ namespace IA_Proyecto_1
                                 //speaker.SpeakAsync("wilco, Spider");
                                 Debug.Log("wilco");
                                 // Navigate Astar solution path if it exists
-                                SaveHer();
+                                FollowPath();
                             }
                         }
                         break;
@@ -169,16 +118,12 @@ namespace IA_Proyecto_1
                 {
                     case "help":
                         Debug.Log("in controls help");
-                        //speaker.SpeakAsync("To reset spider say control reset");
-                        //speaker.SpeakAsync("To randomize everything say controls random");
-                        //speaker.SpeakAsync("To randomize obstacles say controls random obstacles");
-                        //speaker.SpeakAsync("To randomize spider say controls random spider");
-                        //speaker.SpeakAsync("To randomize jane say controls random jane");
-                        //speaker.SpeakAsync("To set obstacle say controls set obstacle location");
-                        //speaker.SpeakAsync("To set spider say controls set spider location");
-                        //speaker.SpeakAsync("To set jane say controls set jane location");
-                        //speaker.SpeakAsync("To set width say controls set mike value");
-                        //speaker.SpeakAsync("To set length say controls set november value");
+                        //speaker.SpeakAsync("To reset say control reset");
+                        //speaker.SpeakAsync("To randomize and reset say control random");
+                        //speaker.SpeakAsync("To set spider \'say controls set spider width value length value\'");
+                        //speaker.SpeakAsync("To set jane \'say controls set jane width value length value\'");
+                        //speaker.SpeakAsync("To set width say controls set width value");
+                        //speaker.SpeakAsync("To set length say controls set length value");
                         break;
                     case "do":
                         if (tokens.Length >= 4)
@@ -191,21 +136,65 @@ namespace IA_Proyecto_1
                         }
                         break;
                     case "reset":
-                        Debug.Log("reseting to starting position");
-                        //speaker.SpeakAsync("Reseting to starting position, control");
+                        Debug.Log("reseting with current values");
+                        CreateCity();
                         break;
-                    case "mike":
-                        if (tokens.Length > 2)
+                    case "set":
+                        if (tokens.Length > 3)
                         {
-                            Debug.LogFormat("Set grid width to {0}. Redraw map to update.", tokens[2]);
-                            System.Int32.TryParse(tokens[2], out width);
+                            switch (tokens[2])
+                            {
+                                case "width":
+                                    Debug.LogFormat("Set grid width to {0}. Redraw map to update.", tokens[2]);
+                                    System.Int32.TryParse(tokens[3], out width);
+                                    break;
+                                case "length":
+                                    Debug.LogFormat("Set grid length to {0}. Redraw map to update.", tokens[2]);
+                                    System.Int32.TryParse(tokens[3], out length);
+                                    break;
+                                case "spider":
+                                    if (tokens.Length > 6)
+                                    {
+                                        Debug.LogFormat("Set spider position to {0}, {1}", tokens[4], tokens[6]);
+                                        int x, y;
+                                        System.Int32.TryParse(tokens[4], out x);
+                                        origin.X = x;
+                                        System.Int32.TryParse(tokens[6], out y);
+                                        origin.Y = y;
+                                    }
+                                    break;
+                                case "jane":
+                                    if (tokens.Length > 6)
+                                    {
+                                        Debug.LogFormat("Set jane position to {0}, {1}", tokens[4], tokens[6]);
+                                        int x, y;
+                                        System.Int32.TryParse(tokens[4], out x);
+                                        goal.X = x;
+                                        System.Int32.TryParse(tokens[6], out y);
+                                        goal.Y = y;
+                                    }
+                                    break;
+                            }
                         }
                         break;
-                    case "november":
-                        if (tokens.Length > 2)
+                    case "tell":
+                        if (tokens.Length > 3)
                         {
-                            Debug.LogFormat("Set grid length to {0}. Redraw map to update.", tokens[2]);
-                            System.Int32.TryParse(tokens[2], out length);
+                            switch (tokens[2])
+                            {
+                                case "spider":
+                                    Debug.LogFormat("Spider location is: {0}, {1}", origin.X, origin.Y);
+                                    break;
+                                case "jane":
+                                    Debug.LogFormat("Jane location is: {0}, {1}", goal.X, goal.Y);
+                                    break;
+                                case "width":
+                                    Debug.LogFormat("Current width is: {0}", width);
+                                    break;
+                                case "length":
+                                    Debug.LogFormat("Current length is: {0}", length);
+                                    break;
+                            }
                         }
                         break;
                 }
@@ -217,21 +206,22 @@ namespace IA_Proyecto_1
             Debug.Log("Preface your command with spider or control");
         }
 
-        private void ShowWeb()
+        // Makes the object follow the path from positions in the pathPositions
+        void FollowPath()
         {
-            // Call whatever the function it is to show the web - hope it exists
-        }
-            
-        private void FindPath()
-        {
+            Dictionary<Point, Point> pathDict = new Dictionary<Point, Point>();
             AStar astar = new AStar(map, origin, goal, diagonal);
+            pathDict = astar.cameFrom;
+
+            // From path to array
+            Point current = goal;
+            ArrayList solution = new ArrayList();
+
             if (astar.cameFrom.ContainsKey(goal))
             {
-                //Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
-                Point current = goal;
                 while (current != origin)
                 {
-                    //Debug.LogFormat("({0},{1}) <- ", current.X.ToString(), current.Y.ToString());
+                    solution.Add(current);
                     current = astar.cameFrom[current];
                 }
             }
@@ -239,101 +229,43 @@ namespace IA_Proyecto_1
             {
                 Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
             }
-        }
 
-        private void SaveHer()
-        {
-            var MaryJane = GameObject.Find("Sphere");
-            if (MaryJane)
+            solution.Reverse();
+
+            foreach (Point position in solution)
             {
-                var MaryJanePos = (Vector2)MaryJane.transform.position; //Vector2, z ignored
-                //FollowPath(MaryJanePos);
-            }
-        }
-
-        // Makes the object follow the path from positions in the pathPositions
-        void FollowPath(Vector2 MaryJanePos)
-        {
-            // Grid cityGrid = new Grid(m, n);
-            Dictionary<Point, Point> pathDict = new Dictionary<Point, Point>();
-            AStar astar = city.astar;
-            pathDict = astar.cameFrom;
-
-            // From path to array
-            Point pos;
-            pos.X = (int)MaryJanePos.x;
-            pos.Y = (int)MaryJanePos.y;
-
-            ArrayList pathList = new ArrayList();
-            pathList.Add(pos);
-            for (int i = 0; i < pathDict.Count; i++)
-            {
-                pathList.Add(pathDict[pos]);
-                pos = pathDict[pos];
-            }
-            pathList.Reverse();
-            System.Console.Out(pathList);
-
-            foreach (var position in pathList)
-            {
+                //transform.Translate(position);
                 city.moveSpiderman(position);
+                Debug.LogFormat("Moving Spider to ({0},{1})", position.X.ToString(), position.Y.ToString());
             }
         }
 
         private void CreateCity()
         {
-            // Calls the script that handles city creation
-
-            // Spiderman position
-            Point SpidermanPoint = getSpidermanPosition();
-
-            // Maryjane position
-            Point MaryjanePoint = getMaryjanePosition();
-
-            city.m = this.m;
-            city.n = this.n;
-            city.init(m,n, SpidermanPoint, MaryjanePoint);
             map = city.generateMap(length, width);
+            // Move spider to X Y PlaceSpiderMan() ?
+            // Move jane to X Y PlaceMaryJane() ?
+        }
+
+        private void RandomCity()
+        {
+            map = city.generateMap(Random.Range(0, 35), Random.Range(0, 35));
             origin = city.generateOrigin(map);
             goal = city.generateGoal(map);
         }
 
-        private Point getSpidermanPosition()
-        {
-            var SpiderMan = GameObject.Find("Spiderman");
-            var SpidermanPos = (Vector2)SpiderMan.transform.position; //Vector2, z ignored
-            Point SpidermanPoint;
-            SpidermanPoint.X = (int)SpidermanPos.x;
-            SpidermanPoint.Y = (int)SpidermanPos.y;
-            return SpidermanPoint;
-        }
-
-        private Point getMaryjanePosition()
-        {
-            var MaryJane = GameObject.Find("Maryjane");
-            var MaryjanePos = (Vector2)MaryJane.transform.position; //Vector2, z ignored
-            Point MaryjanePoint;
-            MaryjanePoint.X = (int)MaryjanePos.x;
-            MaryjanePoint.Y = (int)MaryjanePos.y;
-            return MaryjanePoint;
-        }
-
         private void PlaceSpiderMan()
-        {/*
+        {
             // Here it is just necesary to make a transform
-            var Spiderman = GameObject.Find("Spiderman");
-            Point spidermanPos = transform.position;
-            city.moveSpiderman(spidermanNewPos);*/
-
-
-            city.moveSpiderman(spidermanNewPos);
+            //Point spidermanPos = transform.position;
+            //city.moveSpiderman(spidermanNewPos);
         }
 
         private void PlaceMaryJane()
         {
-            /*var Maryjane = GameObject.Find("Maryjane");
-            Point MaryjanePos = Maryjane.transform.position;
-            city.moveMaryjane(NewPos);*/    
+            //var MaryJane = GameObject.Find("Sphere");
+            //Point spidermanPos = transform.position;
+            //city.moveSpiderman(spidermanNewPos);
         }
 
         private void Restart()
