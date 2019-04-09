@@ -804,7 +804,22 @@ ModelImporter:
     7400000: Base stack
     9500000: //RootNode
     13700000: Spiderman 1
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: spiderman.dff
+    second: {fileID: 2800000, guid: 6d96dfc094e23af4a98b045bbb5d8b87, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: spiderman.norm
+    second: {fileID: 2800000, guid: b32ff426082b5034fba5443e6fad21f6, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: spiderman.spec
+    second: {fileID: 2800000, guid: ceffb75c85c6ebb44a67c8183ef68511, type: 3}
   materials:
     importMaterials: 1
     materialName: 0

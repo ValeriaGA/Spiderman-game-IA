@@ -7,6 +7,9 @@ namespace IA_Proyecto_1
 {
     public class buildCity : MonoBehaviour
     {
+        public int m { get; set; } //Width of the city
+        public int n { get; set; } //Lenght of the city
+
         public GameObject[] buildings;
         private Grid map;
         private int buildingFootprint = 3;
