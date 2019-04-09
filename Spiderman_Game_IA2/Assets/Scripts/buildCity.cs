@@ -75,8 +75,8 @@ namespace IA_Proyecto_1
 
         public void set_city_size(int n, int m)
         {
-            this.n = n;
-            this.m = m;
+            this.length = n;
+            this.width = m;
             
         }
 
