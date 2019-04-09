@@ -63,11 +63,11 @@ namespace IA_Proyecto_1
             AStar astar = new AStar(map, origin, goal, diagonal);
             if (astar.cameFrom.ContainsKey(goal))
             {
-                Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
+                //Debug.LogFormat("Found path from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
                 Point current = goal;
                 while (current != origin)
                 {
-                    Debug.LogFormat("({0},{1}) <- ", current.X.ToString(), current.Y.ToString());
+                    //Debug.LogFormat("({0},{1}) <- ", current.X.ToString(), current.Y.ToString());
                     current = astar.cameFrom[current];
                 }
             }
@@ -75,8 +75,7 @@ namespace IA_Proyecto_1
             {
                 Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
             }
-
-        
+            
         }
 
         public void set_city_size(int n, int m)

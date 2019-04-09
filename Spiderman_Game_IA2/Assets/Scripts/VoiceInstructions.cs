@@ -10,56 +10,157 @@ namespace IA_Proyecto_1
     public class VoiceInstructions : MonoBehaviour
     {
         private KeywordRecognizer keywordRecognizer;
+        private DictationRecognizer dictationRecognizer;
         private Dictionary<string, System.Action> actions = new Dictionary<string, System.Action>();
 
         List<UnityEngine.Vector3> pathPositions = new List<UnityEngine.Vector3>();
 
         string[] modesArray = { "start", "progress", "finalized" };
 
+        string[] tokens;
+
         bool diagonal = false; // Tells if the grid support diagonals or not
 
         public int m, n, a; // These atributes set the size to the city.
 
+        public buildCity city;
+
         Point SpiderManPos { get; set; }
         Point MaryJanePos { get; set; }
 
-        buildCity city = new buildCity();
-
         // Start is called before the first frame update
-        void Start()
+        public void Start()
         {
             // start
-            actions.Add("save her", SaveHer);
-            actions.Add("create city", CreateCity);
-            actions.Add("place spider man", PlaceSpiderMan);
+            actions.Add("spider", spiderCommands);
+            actions.Add("controls", controlsCommands);
+            actions.Add("help", helpCommmands);
 
-            // progress
+            //string[] c = { "good day", "help", "spider", "controls", "do you copy", "find", "diagonal", "reset", "random", "obstacles", "jane",
+            //    "alpha", "bravo", "charlie", "delta", "echo",  "foxtrot", "golf", "hotel", "india", "juliet", "kilo", "lima", "mike",
+            //    "november", "oscar", "papa", "quebec", "romeo", "sierra", "tango", "uniform", "viktor", "whiskey", "xray", "yankee", "zulu"};
+            //List<string> commands = new List<string>(c);
 
+            //for (var i = 0; i <= 9; i++)
+            //    commands.Add(i.ToString());
 
-            //Numbers
-            actions.Add("zero", Back);
-            actions.Add("one", Back);
-            actions.Add("two", Back);
-            actions.Add("three", Back);
-            actions.Add("four", Back);
-            actions.Add("five", Back);
-            actions.Add("six", Back);
-            actions.Add("seven", Back);
-            actions.Add("eight", Back);
-            actions.Add("nine", Back);
+            //keywordRecognizer = new KeywordRecognizer(commands.ToArray());
+            //keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
+            //keywordRecognizer.Start();
 
-            // finalized
-            actions.Add("restart", Restart);
-
-            keywordRecognizer = new KeywordRecognizer(actions.Keys.ToArray());
-            keywordRecognizer.OnPhraseRecognized += RecognizedSpeech;
-            keywordRecognizer.Start();
+            dictationRecognizer = new DictationRecognizer();
+            dictationRecognizer.DictationResult += DictationRecognizer_DictationResult;
+            dictationRecognizer.Start();
+            Debug.Log("Starting");
+        }
+        private void DictationRecognizer_DictationResult(string text, ConfidenceLevel confidence)
+        {
+            Debug.Log(text);
+            tokens = text.Split(' ');
+            actions[tokens[0]].Invoke();
         }
 
         private void RecognizedSpeech(PhraseRecognizedEventArgs speech)
         {
             Debug.Log(speech.text);
-            actions[speech.text].Invoke();
+            tokens = speech.text.Split(' ');
+            actions[tokens[0]].Invoke();
+        }
+
+        private void spiderCommands()
+        {
+            if (tokens.Length > 1)
+            {
+                switch (tokens[1].ToLower())
+                {
+                    case "help":
+                        Debug.Log("in spider help");
+                        //speaker.SpeakAsync("To toggle diagonal say spider diagonal");
+                        //speaker.SpeakAsync("To start the animation say spider find jane");
+                        //speaker.SpeakAsync("To quit say good day");
+                        break;
+                    case "do":
+                        if (tokens.Length >= 4)
+                        {
+                            if (tokens[2].ToLower() == "you" && tokens[3].ToLower() == "copy")
+                            {
+                                Debug.Log("affirm");
+                                //speaker.SpeakAsync("Affirm, Spider");
+                            }
+                        }
+                        break;
+                    case "find":
+                        if (tokens.Length >= 3)
+                        {
+                            if (tokens[2].ToLower() == "jane")
+                            {
+                                //speaker.SpeakAsync("wilco, Spider");
+                                Debug.Log("wilco");
+                            }
+                        }
+                        break;
+                    case "diagonal":
+                        if (diagonal == true)
+                        {
+                            diagonal = false;
+                            //speaker.SpeakAsync("diagonal set to off, spider");
+                            Debug.Log("diagonal off");
+                        }
+                        else
+                        {
+                            diagonal = true;
+                            //speaker.SpeakAsync("diagonal set to on, spider");
+                            Debug.Log("diagonal on");
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void controlsCommands()
+        {
+            if (tokens.Length > 1)
+            {
+                switch (tokens[1].ToLower())
+                {
+                    case "help":
+                        Debug.Log("in controls help");
+                        //speaker.SpeakAsync("To reset spider say control reset");
+                        //speaker.SpeakAsync("To randomize everything say controls random");
+                        //speaker.SpeakAsync("To randomize obstacles say controls random obstacles");
+                        //speaker.SpeakAsync("To randomize spider say controls random spider");
+                        //speaker.SpeakAsync("To randomize jane say controls random jane");
+                        //speaker.SpeakAsync("To set obstacle say controls set obstacle location");
+                        //speaker.SpeakAsync("To set spider say controls set spider location");
+                        //speaker.SpeakAsync("To set jane say controls set jane location");
+                        //speaker.SpeakAsync("To set m say controls set mike value");
+                        //speaker.SpeakAsync("To set n say controls set november value");
+                        //speaker.SpeakAsync("To toggle web say controls web");
+                        break;
+                    case "do":
+                        if (tokens.Length >= 4)
+                        {
+                            if (tokens[2].ToLower() == "you" && tokens[3].ToLower() == "copy")
+                            {
+                                Debug.Log("loud and clear");
+                                //speaker.SpeakAsync("loud and clear, control");
+                            }
+                        }
+                        break;
+                    case "reset":
+                        Debug.Log("reseting to starting position");
+                        //speaker.SpeakAsync("Reseting to starting position, control");
+                        break;
+                    case "random":
+                        Debug.Log("in controls random");
+                        break;
+                }
+            }
+        }
+
+        private void helpCommmands()
+        {
+            Debug.Log("Preface your command with spider or control");
         }
 
 
