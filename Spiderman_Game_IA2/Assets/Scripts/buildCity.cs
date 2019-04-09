@@ -143,12 +143,12 @@ namespace IA_Proyecto_1
 
         public void moveSpiderman(Point newPosition)
         {
-            people[1].transforme.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);   
+            people[1].transform.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);   
             
         }
         public void moveWoman(Point newPosition)
         {
-            people[0].transforme.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);
+            people[0].transform.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);
             
         }
 
