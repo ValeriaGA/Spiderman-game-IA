@@ -83,7 +83,7 @@ namespace IA_Proyecto_1
 
         public void build_city()
         {
-            map = new Grid(n, m);
+            map = new Grid(length, width);
 
             //Create city
             for (int h = 0; h < map.height; h++)
