@@ -806,20 +806,25 @@ ModelImporter:
     13700000: Spiderman 1
   externalObjects:
   - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: 'Material #335'
+    second: {fileID: 2100000, guid: f0018e5508e848f42a4353292016e2d8, type: 2}
+  - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: spiderman.dff
-    second: {fileID: 2800000, guid: 6d96dfc094e23af4a98b045bbb5d8b87, type: 3}
+    second: {fileID: 2800000, guid: 094b1febee050f345a50ccdfbb7d49c2, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: spiderman.norm
-    second: {fileID: 2800000, guid: b32ff426082b5034fba5443e6fad21f6, type: 3}
+    second: {fileID: 2800000, guid: c9f7259c3a8772b44b5d18434efbcda2, type: 3}
   - first:
       type: UnityEngine:Texture2D
       assembly: UnityEngine.CoreModule
       name: spiderman.spec
-    second: {fileID: 2800000, guid: ceffb75c85c6ebb44a67c8183ef68511, type: 3}
+    second: {fileID: 2800000, guid: 6977c3269cf6965458edd00035c1c3dc, type: 3}
   materials:
     importMaterials: 1
     materialName: 0
