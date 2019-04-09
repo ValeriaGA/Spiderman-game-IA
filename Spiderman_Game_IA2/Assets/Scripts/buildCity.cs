@@ -25,13 +25,10 @@ namespace IA_Proyecto_1
         {
             City map = new City(length, width);
 
-            //float seed = Random.Range(0, 100);
-
             for (int h = 0; h < map.height; h++)
             {
                 for (int w = 0; w < map.width; w++)
                 {
-                    //int result = (int)(Mathf.PerlinNoise(w / 10.0f + seed, h / 10.0f + seed) * 10);
                     Vector3 pos = new Vector3(w * buildingFootprint, 0, h * buildingFootprint);
                     int n = Random.Range(0, buildings.Length);
                     Instantiate(buildings[n], pos, Quaternion.identity);
