@@ -62,6 +62,7 @@ namespace IA_Proyecto_1
             dictationRecognizer.Start();
 
             //speaker = new SpeechSynthesizer();
+            //speaker.SetOutputToDefaultAudioDevice();
             //speaker.SelectVoice("Microsoft David Desktop");
         }
         private void DictationRecognizer_DictationResult(string text, ConfidenceLevel confidence)
@@ -154,17 +155,21 @@ namespace IA_Proyecto_1
                         Debug.Log("reseting with current values");
                         CreateCity();
                         break;
+                    case "random":
+                        Debug.Log("reseting with current values");
+                        RandomCity();
+                        break;
                     case "set":
                         if (tokens.Length > 3)
                         {
                             switch (tokens[2])
                             {
-                                case "width":
+                                case "whiskey":
                                     Debug.LogFormat("Set grid width to {0}. Redraw map to update.", tokens[2]);
                                     //speaker.SpeakAsync("seting grid width to: " + tokens[2]);
                                     System.Int32.TryParse(tokens[3], out width);
                                     break;
-                                case "length":
+                                case "lima":
                                     Debug.LogFormat("Set grid length to {0}. Redraw map to update.", tokens[2]);
                                     //speaker.SpeakAsync("seting grid legnth to: " + tokens[2]);
                                     System.Int32.TryParse(tokens[3], out length);
@@ -174,23 +179,29 @@ namespace IA_Proyecto_1
                                     {
                                         Debug.LogFormat("Set spider position to {0}, {1}", tokens[4], tokens[6]);
                                         //speaker.SpeakAsync("seting spiders poslition to: " + tokens[4] + ", " + tokens[6]);
+                                        Point prev = origin;
                                         int x, y;
                                         System.Int32.TryParse(tokens[4], out x);
                                         origin.X = x;
                                         System.Int32.TryParse(tokens[6], out y);
                                         origin.Y = y;
+                                        city.moveSpiderman(prev, origin);
                                     }
                                     break;
+                                case "marie":
+                                case "merry":
                                 case "mary":
                                     if (tokens.Length > 6)
                                     {
                                         Debug.LogFormat("Set mary position to {0}, {1}", tokens[4], tokens[6]);
                                         //speaker.SpeakAsync("seting marys poslition to: " + tokens[4] + ", " + tokens[6]);
+                                        Point prev = goal;
                                         int x, y;
                                         System.Int32.TryParse(tokens[4], out x);
                                         goal.X = x;
                                         System.Int32.TryParse(tokens[6], out y);
                                         goal.Y = y;
+                                        city.moveWoman(prev, goal);
                                     }
                                     break;
                             }
@@ -209,11 +220,11 @@ namespace IA_Proyecto_1
                                     Debug.LogFormat("mary location is: {0}, {1}", goal.X, goal.Y);
                                     //speaker.SpeakAsync("mary's location is: " + goal.X.ToString() + ", " + goal.Y.ToString());
                                     break;
-                                case "width":
+                                case "whiskey":
                                     Debug.LogFormat("Current width is: {0}", width);
                                     //speaker.SpeakAsync("Current width is " + width.ToString());
                                     break;
-                                case "length":
+                                case "lima":
                                     Debug.LogFormat("Current length is: {0}", length);
                                     //speaker.SpeakAsync("Current length is: " + length.ToString());
                                     break;
@@ -253,13 +264,14 @@ namespace IA_Proyecto_1
             {
                 Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
             }
-
+            
             solution.Reverse();
-
+            Point prev = origin;
             foreach (Point position in solution)
             {
                 //transform.Translate(position);
-                city.moveSpiderman(position);
+                city.moveSpiderman(prev, position);
+                //city.SetSpiderLocation(position);
                 Debug.LogFormat("Moving Spider to ({0},{1})", position.X.ToString(), position.Y.ToString());
 
                 //Instantiate web
@@ -267,22 +279,24 @@ namespace IA_Proyecto_1
                 GameObject web2 = Instantiate(web, pos, Quaternion.identity);
                 web2.transform.Rotate(new Vector3(90, 0, 0));
                 ins_web.Add(web2);
+
+                prev = position;
             }
         }
 
         private void CreateCity()
         {
             map = city.generateMap(length, width);
-            // Move spider to X Y PlaceSpiderMan() ?
-            // Move jane to X Y PlaceMaryJane() ?
+            city.moveWoman(goal, goal);
+            city.moveSpiderman(origin, origin);
         }
 
         private void RandomCity()
         {
-            //foreach(GameObject web in ins_web)
-            //{
-            //    Destroy(web);
-            //}
+            foreach (GameObject web_o in ins_web)
+            {
+                Destroy(web_o);
+            }
 
             map = city.generateMap(Random.Range(0, 35), Random.Range(0, 35));
             origin = city.generateOrigin(map);

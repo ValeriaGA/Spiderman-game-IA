@@ -88,20 +88,33 @@ namespace IA_Proyecto_1
             }
 
             Vector3 posWoman = new Vector3((float) (goal.X + 0.25) * buildingFootprint, 4, goal.Y * buildingFootprint);
-            ins_mary = Instantiate(people[1], posWoman, Quaternion.identity);
+            ins_mary = Instantiate(people[0], posWoman, Quaternion.identity);
 
             return goal;
         }
         
-
-        public void moveSpiderman(Point newPosition)
+        public void SetSpiderLocation(Point location)
         {
-            people[1].transform.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);   
+            if (ins_spider != null) Destroy(ins_spider);
+            Vector3 posSpiderman = new Vector3(location.X * buildingFootprint, 5, location.Y * buildingFootprint);
+            ins_spider = Instantiate(ins_spider, posSpiderman, Quaternion.identity);
+        }
+
+        public void SetMaryPosition(Point location)
+        {
+            if (ins_mary != null) Destroy(ins_mary);
+            Vector3 posMary = new Vector3(location.X * buildingFootprint, 5, location.Y * buildingFootprint);
+            ins_mary = Instantiate(ins_mary, posMary, Quaternion.identity);
+        }
+
+        public void moveSpiderman(Point oldPosition, Point newPosition)
+        {
+            ins_spider.transform.Translate(System.Math.Abs(oldPosition.X - newPosition.X) * buildingFootprint, 5, System.Math.Abs(oldPosition.Y - newPosition.Y) * buildingFootprint);   
             
         }
-        public void moveWoman(Point newPosition)
+        public void moveWoman(Point oldPosition, Point newPosition)
         {
-            people[0].transform.Translate(newPosition.X * buildingFootprint, 4, newPosition.Y * buildingFootprint);
+            ins_mary.transform.Translate(System.Math.Abs(oldPosition.X - newPosition.X) * buildingFootprint, 5, System.Math.Abs(oldPosition.Y - newPosition.Y) * buildingFootprint);
             
         }
 

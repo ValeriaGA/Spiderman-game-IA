@@ -672,10 +672,20 @@ PrefabInstance:
       propertyPath: m_Name
       value: vThirdPersonCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 7259188281033024983, guid: 50847a769d6ad76449494d33d9ecb1aa,
+        type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 7259188281033024983, guid: 50847a769d6ad76449494d33d9ecb1aa,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7259188281032759123, guid: 50847a769d6ad76449494d33d9ecb1aa,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.16
       objectReference: {fileID: 0}
     - target: {fileID: 7259188281032759123, guid: 50847a769d6ad76449494d33d9ecb1aa,
         type: 3}
@@ -685,7 +695,7 @@ PrefabInstance:
     - target: {fileID: 7259188281032759123, guid: 50847a769d6ad76449494d33d9ecb1aa,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 7259188281032759123, guid: 50847a769d6ad76449494d33d9ecb1aa,
         type: 3}
@@ -737,6 +747,12 @@ PrefabInstance:
       propertyPath: field of view
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 7259188281022858207, guid: 50847a769d6ad76449494d33d9ecb1aa,
+        type: 3}
+      propertyPath: target
+      value: 
+      objectReference: {fileID: 2606312287275213113, guid: 31a399946efcbb34b9fb2c9da726efb9,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 50847a769d6ad76449494d33d9ecb1aa, type: 3}
 --- !u!1 &1450219246
