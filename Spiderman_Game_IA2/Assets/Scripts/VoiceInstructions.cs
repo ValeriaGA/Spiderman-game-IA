@@ -208,7 +208,7 @@ namespace IA_Proyecto_1
                         }
                         break;
                     case "tell":
-                        if (tokens.Length > 3)
+                        if (tokens.Length > 2)
                         {
                             switch (tokens[2])
                             {
@@ -259,29 +259,30 @@ namespace IA_Proyecto_1
                     solution.Add(current);
                     current = astar.cameFrom[current];
                 }
+                solution.Reverse();
+                Point prev = origin;
+                foreach (Point position in solution)
+                {
+                    //transform.Translate(position);
+                    city.moveSpiderman(prev, position);
+                    //city.SetSpiderLocation(position);
+                    Debug.LogFormat("Moving Spider to ({0},{1})", position.X.ToString(), position.Y.ToString());
+
+                    //Instantiate web
+                    Vector3 pos = new Vector3(position.X * 3, 9, position.Y * 3);
+                    GameObject web2 = Instantiate(web, pos, Quaternion.identity);
+                    web2.transform.Rotate(new Vector3(90, 0, 0));
+                    ins_web.Add(web2);
+
+                    prev = position;
+                }
             }
             else
             {
                 Debug.LogFormat("No path found from ({0},{1}) to ({2},{3}) = \n", origin.X.ToString(), origin.Y.ToString(), goal.X.ToString(), goal.Y.ToString());
             }
             
-            solution.Reverse();
-            Point prev = origin;
-            foreach (Point position in solution)
-            {
-                //transform.Translate(position);
-                city.moveSpiderman(prev, position);
-                //city.SetSpiderLocation(position);
-                Debug.LogFormat("Moving Spider to ({0},{1})", position.X.ToString(), position.Y.ToString());
-
-                //Instantiate web
-                Vector3 pos = new Vector3(position.X * 3, 9, position.Y * 3);
-                GameObject web2 = Instantiate(web, pos, Quaternion.identity);
-                web2.transform.Rotate(new Vector3(90, 0, 0));
-                ins_web.Add(web2);
-
-                prev = position;
-            }
+            
         }
 
         private void CreateCity()
